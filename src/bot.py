@@ -39,6 +39,6 @@ class SpiegelBot:
             ArticleList.append(art)
 
 
-        for x in ArticleList:
-            print(x.headline)
-            print(x.link)
+        for link in ArticleList:
+            self.driver.get(link.link)
+            t.sleep(1)

@@ -41,52 +41,50 @@ class SpiegelBot:
             print("Registered new Article: " + art.headline)
 
     def check(self, categorie):
-        self.driver.get("https://www.spiegel.de/" + categorie + "/")
-        t.sleep(1)
+        try:
 
-        # Create file
-        self.file = "saves/" + categorie + ".txt"
+            t.sleep(30)
+            self.driver.get("https://www.spiegel.de/" + categorie + "/")
+            t.sleep(1)
 
-        save = open(self.file, 'a', encoding="utf-8")
-        save.close()
+            # Create file
+            self.file = "saves/" + categorie + ".txt"
 
-        newestNewsContainer = self.driver.find_element_by_css_selector('section[data-area="article-teaser-list"]')
+            save = open(self.file, 'a', encoding="utf-8")
+            save.close()
 
-        newsList = newestNewsContainer.find_elements_by_css_selector('a[class="block"]')
+            newestNewsContainer = self.driver.find_element_by_css_selector('section[data-area="article-teaser-list"]')
 
-        ArticleList = []
+            newsList = newestNewsContainer.find_elements_by_css_selector('a[class="block"]')
 
-        for articleTeaser in newsList:
-            art = Article()
-            art.link = articleTeaser.get_attribute("href")
-            art.headline = articleTeaser.get_attribute("title")
-            ArticleList.append(art)
+            ArticleList = []
 
+            for articleTeaser in newsList:
+                art = Article()
+                art.link = articleTeaser.get_attribute("href")
+                art.headline = articleTeaser.get_attribute("title")
+                ArticleList.append(art)
 
-        for link in ArticleList:
-            t.sleep(3)
-            self.driver.get(link.link)
-            authorContainer = self.driver.find_elements_by_css_selector('a[class="text-black font-bold border-b '
-                                                                        'border-shade-light hover:border-black"]')
+            for link in ArticleList:
+                t.sleep(6)
+                self.driver.get(link.link)
+                authorContainer = self.driver.find_elements_by_css_selector('a[class="text-black font-bold border-b '
+                                                                            'border-shade-light hover:border-black"]')
 
-            AuthorString = ""
+                AuthorString = ""
 
-            for author in authorContainer:
-                AuthorString += author.get_attribute("title") + ";"
+                for author in authorContainer:
+                    AuthorString += author.get_attribute("title") + ";"
 
+                link.author = AuthorString
 
+                link.date_c = self.driver.find_element_by_class_name("timeformat")
+                link.date = link.date_c.text
 
+                textContainers = self.driver.find_elements_by_class_name("RichText")
+                for text in textContainers:
+                    link.content += text.text
 
-
-            link.author = AuthorString
-
-            link.date_c = self.driver.find_element_by_class_name("timeformat")
-            link.date = link.date_c.text
-
-            textContainers = self.driver.find_elements_by_class_name("RichText")
-            for text in textContainers:
-                link.content += text.text
-
-            self.saveArticle(link)
-
-
+                self.saveArticle(link)
+        except:
+            pass

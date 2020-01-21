@@ -2,14 +2,20 @@ from selenium import webdriver
 
 from src.bot import SpiegelBot
 
-PATH_TO_DRIVER = "C:/Windows/chromedriver.exe"
+PATH_TO_DRIVER = "/home/phantomjs"
 
-driver = webdriver.Chrome(PATH_TO_DRIVER)
+webdriver.PhantomJS(service_args=['--load-images=no'])
+
+driver = webdriver.PhantomJS(PATH_TO_DRIVER)
+
+webdriver.PhantomJS(service_args=['--load-images=no'])
 
 categories = ["politik","panorama","sport", "wirtschaft","netzwelt","wissenschaft"\
               "auto","kultur","geschichte","leben","karriere"]
 
 bot = SpiegelBot(driver)
 
-bot.check(categories[0])
+while True:
+    for a in categories:
+        bot.check(a)
 

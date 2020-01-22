@@ -12,7 +12,8 @@ categories = ["politik","panorama","sport", "wirtschaft","netzwelt",\
 
 bot = SpiegelBot(driver)
 
+for a in categories:
+  bot.check(a)
 
-bot.check("wissenschaft")
 
 

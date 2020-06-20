@@ -2,10 +2,9 @@ from selenium import webdriver
 
 from src.bot import SpiegelBot
 
-PATH_TO_DRIVER = "C:/Windows/phantomjs.exe"
+PATH_TO_DRIVER = ""
 
-driver = webdriver.PhantomJS(PATH_TO_DRIVER, service_args=["--load-images=no"])
-
+driver = webdriver.Firefox(executable_path=PATH_TO_DRIVER)
 
 categories = ["politik","panorama","sport", "wirtschaft","netzwelt",\
               "auto","kultur","geschichte","leben","karriere"]

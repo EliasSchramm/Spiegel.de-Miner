@@ -43,9 +43,14 @@ class SpiegelBot:
     def check(self, categorie):
         try:
 
-            t.sleep(30)
-            self.driver.get("https://www.spiegel.de/" + categorie + "/")
             t.sleep(1)
+            self.driver.get("https://www.spiegel.de/" + categorie + "/")
+
+            t.sleep(5)
+
+            if ("consent" in self.driver.current_url):
+                cockie_ele = self.driver.find_element_by_css_selector('button[data-consent-el="acceptAllButton"]')
+                cockie_ele.click()
 
             # Create file
             self.file = "saves/" + categorie + ".txt"
